@@ -1,23 +1,17 @@
 package com.juanabanto.test.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Data
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -27,14 +21,31 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Column
     private String name;
 
     @Column(unique = true)
     private String email;
 
+    @Column
     private String password;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "usuario_id")
     private List<Phone> phones;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime created;
+
+    @Column
+    private LocalDateTime modified;
+
+    @Column(name = "last_login", nullable = false)
+    private LocalDateTime lastLogin;
+
+    @Column(name = "token")
+    private String token;
+
+    @Column(name = "is_active")
+    private boolean isActive;
 }
